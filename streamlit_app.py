@@ -128,7 +128,7 @@ class SGPA_Calculator:
         return data, sgpa
 
 class CGPA_Calculator:
-    def __init__(self):
+    def _init_(self):
         self.sem_credits = [(1, 20), (2, 20), (3, 24), (4, 24), (5, 25), (6, 24), (7, 20), (8, 18)]
 
     def calculate_cgpa(self, n_sem, sem_credits_earned):
@@ -138,6 +138,7 @@ class CGPA_Calculator:
         return cgpa
 
 def main():
+    
     st.title("CGPA and SGPA Calculator")
 
     option = st.radio("Choose Calculator:", ["SGPA Calculator for all Semesters", "CGPA Calculator"])
@@ -166,7 +167,7 @@ def main():
         st.write("<div class='container'>", unsafe_allow_html=True)
         st.write("<h1>Enter marks for the following subjects:</h1>", unsafe_allow_html=True)
         st.table(data)
-        st.info('⚠️ Note: Total credits earned refer to the sum of credits obtained in all semesters. You\'ll need this value to calculate the CGPA.')
+        st.info('⚠ Note: Total credits earned refer to the sum of credits obtained in all semesters. You\'ll need this value to calculate the CGPA.')
 
         st.write(f"<h2>Total Credits Earned: {sum([row[3] for row in data[1:]])}</h2>", unsafe_allow_html=True)
 
@@ -176,13 +177,8 @@ def main():
             st.write("</div>", unsafe_allow_html=True)
 
             pdf_buffer = sgpa_calc.save_pdf(data, sgpa)
-            st.write(f"<h3>Download your result as PDF:</h3>", unsafe_allow_html=True)
-            if st.button("Download PDF", help="Download PDF", key="download_pdf"):
-                st.markdown(get_binary_file_downloader_html(pdf_buffer, "result.pdf"), unsafe_allow_html=True)
-                st.balloons()  # Balloons appear only after the Download PDF button is clicked
-
-            st.balloons()  # Balloons appear only after the Calculate SGPA button is clicked
-
+            st.markdown(sgpa_calc.get_binary_file_downloader_html(pdf_buffer, "Table as PDF"), unsafe_allow_html=True)
+            st.balloons()
         st.write("</div>", unsafe_allow_html=True)
 
     elif option == "CGPA Calculator":
@@ -200,9 +196,10 @@ def main():
             total_credits = sum(credit for _, credit in cgpa_calc.sem_credits[:num_sem_input])
             total_final_credits_earned = sum(credit for _, credit in sem_credits_earned)
             cgpa = total_final_credits_earned / total_credits
-            st.title(f"*CGPA for {num_sem_input} semesters:* {cgpa:.2f}")
-            st.balloons()
+            st.title(f"CGPA for {num_sem_input} semesters: {cgpa:.2f}")
+            st.balloons()      
+
+
 
 if __name__ == "__main__":
     main()
-
