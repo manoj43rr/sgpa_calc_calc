@@ -128,7 +128,7 @@ class SGPA_Calculator:
         return data, sgpa
 
 class CGPA_Calculator:
-    def _init_(self):
+    def __init__(self):
         self.sem_credits = [(1, 20), (2, 20), (3, 24), (4, 24), (5, 25), (6, 24), (7, 20), (8, 18)]
 
     def calculate_cgpa(self, n_sem, sem_credits_earned):
